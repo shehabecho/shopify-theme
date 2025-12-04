@@ -1,0 +1,26 @@
+{
+  "sections": {
+    "header": {
+      "type": "header",
+      "settings": { "menu": "main-menu" }
+    },
+    "collection-products": {
+      "type": "collection-products",
+      "settings": {
+        "columns_desktop": 4,
+        "columns_tablet": 3,
+        "columns_mobile": 2,
+        "accent_color": "#007bff"
+      }
+    },
+    "footer": {
+      "type": "footer",
+      "settings": { "newsletter_enable": true }
+    }
+  },
+  "order": [
+    "header",
+    "collection-products",
+    "footer"
+  ]
+}

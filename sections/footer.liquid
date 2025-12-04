@@ -1,0 +1,248 @@
+<footer>
+  <div class="footer__wrapper">
+    <div class="footer__top">
+      <div class="footer__section footer__brand">
+        <h3 class="footer__title">
+          {{ shop.name }}
+        </h3>
+        <p class="footer__description">
+          {{ section.settings.description | default: 'Your friendly neighborhood shop.' }}
+        </p>
+      </div>
+
+      <nav class="footer__section footer__menu" role="navigation" aria-label="Footer menu">
+        <h4 class="footer__menu-title">Quick Links</h4>
+        {% for link in section.settings.menu.links %}
+          <a href="{{ link.url }}" class="footer__menu-link">
+            {{ link.title }}
+          </a>
+        {% endfor %}
+      </nav>
+
+      <div class="footer__section footer__icons">
+        <h4 class="footer__icons-title">Connect</h4>
+        {% for social in section.settings.social_links %}
+          <a href="{{ social.url }}" class="footer__social-link" aria-label="{{ social.title }}">
+            {{ social.icon | default: 'icon-' | append: social.handle | append: '.svg' | inline_asset_content }}
+          </a>
+        {% endfor %}
+      </div>
+    </div>
+
+    <div class="footer__bottom">
+      <p class="footer__copyright">
+        &copy; {{ 'now' | date: '%Y' }}
+        {{ shop.name }}. All rights reserved.
+      </p>
+      <div class="footer__payment">
+        {% if section.settings.payment_icons %}
+          {% for icon in section.settings.payment_icons %}
+            {{ icon | inline_asset_content }}
+          {% endfor %}
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</footer>
+
+{% stylesheet %}
+  :root {
+    --footer-bg: #f8f9fa;
+    --footer-border-top: 1px solid #e0e0e0;
+    --color-foreground: #333333;
+    --color-background: #ffffff;
+    --color-primary: #007bff;
+    --color-accent: #ffc107;
+    --transition: all 0.3s ease;
+    --page-margin: 1rem;
+  }
+
+  footer {
+    background-color: var(--footer-bg);
+    border-top: var(--header-border-bottom); /* Reuse header's border */
+    color: var(--color-foreground);
+    padding: 3rem 0 1rem;
+    margin-top: auto;
+  }
+
+  .footer__wrapper {
+    max-width: 1200px;
+    width: 100%;
+    margin: 0 auto;
+    padding: 0 var(--header-padding);
+  }
+
+  .footer__top {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 2rem;
+    margin-bottom: 2rem;
+  }
+
+  .footer__section {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .footer__title,
+  .footer__menu-title,
+  .footer__icons-title {
+    margin: 0 0 1rem 0;
+    font-size: 1.125rem;
+    font-weight: 600;
+    color: var(--color-foreground);
+  }
+
+  .footer__description {
+    margin: 0 0 1rem 0;
+    font-size: 0.875rem;
+    line-height: 1.5;
+    color: #666;
+  }
+
+  .footer__menu-link,
+  .footer__social-link {
+    text-decoration: none;
+    color: #666;
+    font-size: 0.875rem;
+    padding: 0.25rem 0;
+    transition: var(--transition);
+    display: block;
+  }
+
+  .footer__menu-link:hover,
+  .footer__social-link:hover {
+    color: var(--color-primary);
+  }
+
+  .footer__social-link {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 2rem;
+    height: 2rem;
+    margin-right: 1rem;
+    border-radius: 50%;
+    background-color: rgba(0, 123, 255, 0.1);
+  }
+
+  .footer__social-link:hover {
+    background-color: rgba(0, 123, 255, 0.2);
+    transform: scale(1.1);
+  }
+
+  footer svg {
+    width: 1.25rem;
+    height: 1.25rem;
+    fill: currentColor;
+  }
+
+  .footer__bottom {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-top: 1.5rem;
+    border-top: 1px solid #dee2e6;
+    font-size: 0.75rem;
+    color: #666;
+  }
+
+  .footer__copyright {
+    margin: 0;
+  }
+
+  .footer__payment {
+    display: flex;
+    gap: 0.5rem;
+  }
+
+  .footer__payment svg {
+    width: 1.5rem;
+    height: auto;
+    opacity: 0.7;
+  }
+
+  /* Mobile Responsiveness */
+  @media (max-width: 768px) {
+    .footer__wrapper {
+      padding: 0 0.5rem;
+    }
+
+    .footer__top {
+      grid-template-columns: 1fr;
+      gap: 1.5rem;
+    }
+
+    .footer__bottom {
+      flex-direction: column;
+      gap: 1rem;
+      text-align: center;
+    }
+
+    .footer__social-link {
+      margin: 0.25rem;
+    }
+  }
+
+  @media (max-width: 480px) {
+    footer {
+      padding: 2rem 0 1rem;
+    }
+
+    .footer__top {
+      gap: 1rem;
+    }
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "Footer",
+  "settings": [
+    {
+      "type": "link_list",
+      "id": "menu",
+      "label": "Menu"
+    },
+    {
+      "type": "textarea",
+      "id": "description",
+      "label": "Shop Description",
+      "default": "Your friendly neighborhood shop."
+    },
+    {
+      "type": "header",
+      "content": "Social Links"
+    },
+    {
+      "type": "link_list",
+      "id": "social_links",
+      "label": "Social Media Links (title as handle, e.g., facebook)"
+    },
+    {
+      "type": "header",
+      "content": "Payment Icons"
+    },
+    {
+      "type": "image_picker",
+      "id": "payment_icon_1",
+      "label": "Payment Icon 1"
+    },
+    {
+      "type": "image_picker",
+      "id": "payment_icon_2",
+      "label": "Payment Icon 2"
+    },
+    {
+      "type": "image_picker",
+      "id": "payment_icon_3",
+      "label": "Payment Icon 3"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Footer"
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,24 @@
+{
+    "sections": {
+        "header": {
+            "type": "header",
+            "settings": {
+                "menu": "main-menu"
+            }
+        },
+        "main": {
+            "type": "main-cart"
+        },
+        "footer": {
+            "type": "footer",
+            "settings": {
+                "newsletter_enable": true
+            }
+        }
+    },
+    "order": [
+        "header",
+        "main",
+        "footer"
+    ]
+}

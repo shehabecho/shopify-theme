@@ -1,0 +1,24 @@
+{
+  "sections": {
+     "header": {
+      "type": "header",
+      "settings": { "menu": "main-menu" }
+    },
+    "product-details": {
+      "type": "main-product"
+    },
+    "related-products": {
+      "type": "related-products"
+    },
+     "footer": {
+      "type": "footer",
+      "settings": { "newsletter_enable": true }
+    }
+  },
+  "order": [
+    "header",
+    "product-details",
+    "related-products",
+    "footer"
+  ]
+}

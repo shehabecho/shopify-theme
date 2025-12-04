@@ -1,0 +1,149 @@
+<div class="features-section">
+  <div class="container">
+    <h2 class="section-title">{{ section.settings.title }}</h2>
+
+    <div class="features-grid">
+      {% for block in section.blocks %}
+        <div class="feature-card">
+          {% if block.settings.icon %}
+            <div class="feature-card__icon">
+              <img src="{{ block.settings.icon | image_url: width: 100 }}" alt="{{ block.settings.title }}">
+            </div>
+          {% else %}
+            <div class="feature-card__icon-placeholder">
+              <svg width="60" height="60" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                <circle cx="12" cy="12" r="10"></circle>
+                <path d="M12 6v6l4 2"></path>
+              </svg>
+            </div>
+          {% endif %}
+          <h3 class="feature-card__title">{{ block.settings.title }}</h3>
+          <p class="feature-card__text">{{ block.settings.text }}</p>
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+</div>
+
+{% stylesheet %}
+  .features-section {
+    padding: 4rem 0;
+    background: white;
+  }
+
+  .features-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 3rem;
+  }
+
+  .feature-card {
+    text-align: center;
+    padding: 2rem;
+  }
+
+  .feature-card__icon,
+  .feature-card__icon-placeholder {
+    width: 80px;
+    height: 80px;
+    margin: 0 auto 1.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    border-radius: 50%;
+    color: white;
+  }
+
+  .feature-card__icon img {
+    width: 50px;
+    height: 50px;
+    object-fit: contain;
+  }
+
+  .feature-card__title {
+    font-size: 1.25rem;
+    font-weight: 700;
+    margin: 0 0 1rem 0;
+  }
+
+  .feature-card__text {
+    color: #666;
+    line-height: 1.6;
+    margin: 0;
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "Features Section",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Section Title",
+      "default": "Why Shop With Us"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "feature",
+      "name": "Feature",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "icon",
+          "label": "Icon Image"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title",
+          "default": "Free Shipping"
+        },
+        {
+          "type": "textarea",
+          "id": "text",
+          "label": "Description",
+          "default": "On orders over $50"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Features Section",
+      "blocks": [
+        {
+          "type": "feature",
+          "settings": {
+            "title": "Free Shipping",
+            "text": "On orders over $50"
+          }
+        },
+        {
+          "type": "feature",
+          "settings": {
+            "title": "24/7 Support",
+            "text": "Get help anytime"
+          }
+        },
+        {
+          "type": "feature",
+          "settings": {
+            "title": "Secure Payment",
+            "text": "100% secure transactions"
+          }
+        },
+        {
+          "type": "feature",
+          "settings": {
+            "title": "Easy Returns",
+            "text": "30-day return policy"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

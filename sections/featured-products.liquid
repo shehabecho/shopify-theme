@@ -1,0 +1,307 @@
+<div class="featured-products">
+  <div class="container">
+    <h2 class="section-title">{{ section.settings.title }}</h2>
+
+    <div class="products-grid">
+      {% assign collection = collections[section.settings.collection] %}
+      {% if collection %}
+        {% for product in collection.products limit: section.settings.products_to_show %}
+          <div class="product-card">
+            <a href="{{ product.url }}" class="product-card__link">
+              <div class="product-card__image">
+                {% if product.featured_image %}
+                  <img src="{{ product.featured_image | image_url: width: 400 }}" alt="{{ product.title }}">
+                {% else %}
+                  {{ 'product-1' | placeholder_svg_tag: 'placeholder-svg' }}
+                {% endif %}
+              </div>
+              <div class="product-card__info">
+                <h3 class="product-card__title">{{ product.title }}</h3>
+                <div class="product-card__price">
+                  {% if product.compare_at_price > product.price %}
+                    <span class="price-sale">{{ product.price | money }}</span>
+                    <span class="price-compare">{{ product.compare_at_price | money }}</span>
+                  {% else %}
+                    <span class="price-regular">{{ product.price | money }}</span>
+                  {% endif %}
+                </div>
+                <div class="product-card__add">
+                  <button
+                    type="button"
+                    class="btn btn--primary add-to-cart-featured"
+                    data-variant-id="{{ product.selected_or_first_available_variant.id }}"
+                    {% unless product.available %}
+                      disabled
+                    {% endunless %}
+                  >
+                    {% if product.available %}
+                      Add to Cart
+                    {% else %}
+                      Sold Out
+                    {% endif %}
+                  </button>
+                </div>
+              </div>
+            </a>
+          </div>
+        {% endfor %}
+      {% endif %}
+    </div>
+
+    {% if section.settings.button_text != blank %}
+      <div class="featured-products__button-wrapper">
+        <a href="{{ section.settings.button_link }}" class="btn btn--secondary">
+          {{ section.settings.button_text }}
+        </a>
+      </div>
+    {% endif %}
+  </div>
+</div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    document.querySelectorAll('.add-to-cart-featured').forEach((button) => {
+      button.addEventListener('click', async (e) => {
+        e.preventDefault();
+        e.stopPropagation(); // Prevent the parent link from triggering
+
+        const variantId = button.dataset.variantId;
+        const originalText = button.textContent;
+
+        // Show loading state
+        button.textContent = 'Adding...';
+        button.disabled = true;
+
+        try {
+          // Add to cart using Shopify Cart API
+          const response = await fetch('/cart/add.js', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+              id: variantId,
+              quantity: 1,
+            }),
+          });
+
+          if (!response.ok) {
+            throw new Error('Failed to add to cart');
+          }
+
+          const data = await response.json();
+
+          // Show success state
+          button.textContent = 'Added!';
+
+          // Open cart drawer and update it
+          if (window.cartDrawer) {
+            window.cartDrawer.open();
+            document.dispatchEvent(new CustomEvent('cart:updated'));
+          } else {
+            // Fallback if drawer not initialized
+            window.location.href = '/cart';
+          }
+
+          // Reset button after 2 seconds
+          setTimeout(() => {
+            button.textContent = originalText;
+            button.disabled = false;
+          }, 2000);
+        } catch (error) {
+          console.error('Error adding to cart:', error);
+
+          // Show error state
+          button.textContent = 'Error!';
+
+          // Reset button after 2 seconds
+          setTimeout(() => {
+            button.textContent = originalText;
+            button.disabled = false;
+          }, 2000);
+        }
+      });
+    });
+  });
+</script>
+
+{% stylesheet %}
+  .featured-products {
+    padding: 4rem 0;
+  }
+
+  .products-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 2rem;
+    margin-bottom: 3rem;
+  }
+
+  .product-card {
+    background: white;
+    border-radius: 0.5rem;
+    overflow: hidden;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+    transition: all 0.3s ease;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+  }
+
+  .product-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.12);
+  }
+
+  .product-card__link {
+    text-decoration: none;
+    color: inherit;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+  }
+
+  .product-card__image {
+    aspect-ratio: 1;
+    overflow: hidden;
+  }
+
+  .product-card__image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.3s ease;
+  }
+
+  .product-card:hover .product-card__image img {
+    transform: scale(1.05);
+  }
+
+  .product-card__info {
+    padding: 1.25rem;
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+  }
+
+  .product-card__title {
+    font-size: 1rem;
+    font-weight: 600;
+    margin: 0 0 0.75rem 0;
+    line-height: 1.3;
+  }
+
+  .product-card__price {
+    display: flex;
+    gap: 0.5rem;
+    align-items: baseline;
+    font-weight: 600;
+    margin-bottom: 1rem;
+  }
+
+  .price-sale {
+    color: #d9534f;
+    font-size: 1.125rem;
+  }
+
+  .price-compare {
+    color: #999;
+    text-decoration: line-through;
+    font-size: 0.875rem;
+  }
+
+  .price-regular {
+    font-size: 1.125rem;
+  }
+
+  .product-card__add {
+    margin-top: auto;
+  }
+
+  .add-to-cart-featured {
+    width: 100%;
+    padding: 0.75rem;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 0.25rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+
+  .add-to-cart-featured:hover:not(:disabled) {
+    background-color: #0056b3;
+  }
+
+  .add-to-cart-featured:disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
+  }
+
+  .featured-products__button-wrapper {
+    text-align: center;
+  }
+
+  .btn--secondary {
+    display: inline-block;
+    padding: 1rem 3rem;
+    background: transparent;
+    color: #667eea;
+    border: 2px solid #667eea;
+    text-decoration: none;
+    border-radius: 50px;
+    font-weight: 600;
+    transition: all 0.3s ease;
+  }
+
+  .btn--secondary:hover {
+    background: #667eea;
+    color: white;
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "Featured Products",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Section Title",
+      "default": "Featured Products"
+    },
+    {
+      "type": "collection",
+      "id": "collection",
+      "label": "Collection"
+    },
+    {
+      "type": "range",
+      "id": "products_to_show",
+      "min": 4,
+      "max": 12,
+      "step": 4,
+      "label": "Products to show",
+      "default": 8
+    },
+    {
+      "type": "text",
+      "id": "button_text",
+      "label": "Button Text",
+      "default": "View All Products"
+    },
+    {
+      "type": "url",
+      "id": "button_link",
+      "label": "Button Link",
+      "default": "/collections/all"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Featured Products"
+    }
+  ]
+}
+{% endschema %}

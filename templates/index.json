@@ -1,0 +1,75 @@
+{
+  "sections": {
+    "header": {
+      "type": "header",
+      "settings": {
+        "menu": "main-menu"
+      }
+    },
+    "hero-banner": {
+      "type": "hero-banner",
+      "settings": {
+        "title": "Welcome to Our Store",
+        "subtitle": "Discover amazing products at unbeatable prices",
+        "button_text": "Shop Now",
+        "button_link": "/collections/all"
+      }
+    },
+    "featured-collections": {
+      "type": "featured-collections",
+      "settings": {
+        "title": "Shop by Category"
+      }
+    },
+    "featured-products": {
+      "type": "featured-products",
+      "settings": {
+        "title": "Bestsellers",
+        "products_to_show": 8
+      }
+    },
+    "features": {
+      "type": "features-section",
+      "settings": {
+        "title": "Why Shop With Us"
+      }
+    },
+    "image-with-text": {
+      "type": "image-with-text",
+      "settings": {
+        "title": "Our Story",
+        "text": "Learn about our journey and commitment to quality"
+      }
+    },
+    "testimonials": {
+      "type": "testimonials",
+      "settings": {
+        "title": "What Our Customers Say"
+      }
+    },
+    "newsletter": {
+      "type": "newsletter-section",
+      "settings": {
+        "title": "Stay Updated",
+        "subtitle": "Subscribe to get special offers and updates"
+      }
+    },
+    "footer": {
+      "type": "footer",
+      "settings": {
+        "newsletter_enable": true
+      }
+    }
+  },
+  "order": [
+    "header",
+    "hero-banner",
+    "featured-collections",
+    "featured-products",
+    "features",
+    "image-with-text",
+    "testimonials",
+    "newsletter",
+    "footer"
+  ]
+}

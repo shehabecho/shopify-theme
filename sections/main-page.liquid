@@ -1,0 +1,33 @@
+<div class="page-width">
+  <h1 class="main-page-title page-title h0">
+    {{ page.title | escape }}
+  </h1>
+  <div class="rte">
+    {{ page.content }}
+  </div>
+</div>
+
+{% stylesheet %}
+  .page-width {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 1.5rem;
+  }
+  .main-page-title {
+    margin-bottom: 2rem;
+    text-align: center;
+  }
+  .rte {
+    line-height: 1.6;
+    color: #333;
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "Page",
+  "tag": "section",
+  "class": "section",
+  "settings": []
+}
+{% endschema %}

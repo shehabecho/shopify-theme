@@ -1,0 +1,285 @@
+<header>
+  <div class="header__wrapper">
+    <h2 class="header__title">
+      {{ shop.name | link_to: routes.root_url }}
+    </h2>
+
+    <nav class="header__menu" role="navigation" aria-label="Main menu">
+      {% for link in section.settings.menu.links %}
+        <a href="{{ link.url }}" class="header__menu-link">
+          {{ link.title }}
+        </a>
+      {% endfor %}
+    </nav>
+
+    <div class="header__icons">
+      {% if shop.customer_accounts_enabled %}
+        <a href="{{ routes.account_url }}" class="header__icon-link" aria-label="Account">
+          {{ 'icon-account.svg' | inline_asset_content }}
+        </a>
+      {% endif %}
+
+      <a
+        href="{{ routes.cart_url }}"
+        class="header__icon-link"
+        id="cart-icon-bubble"
+        aria-label="Cart{% if cart.item_count > 0 %}, {{ cart.item_count }} items{% endif %}"
+      >
+        <span
+          class="header__cart-badge"
+          {% unless cart.item_count > 0 %}
+            style="display: none;"
+          {% endunless %}
+        >
+          {{ cart.item_count }}
+        </span>
+        {{ 'icon-cart.svg' | inline_asset_content }}
+      </a>
+    </div>
+  </div>
+</header>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const cartIcon = document.getElementById('cart-icon-bubble');
+    if (cartIcon) {
+      cartIcon.addEventListener('click', (e) => {
+        e.preventDefault();
+        if (window.cartDrawer) {
+          window.cartDrawer.open();
+        } else {
+          window.location.href = cartIcon.href;
+        }
+      });
+    }
+  });
+</script>
+
+{% stylesheet %}
+  :root {
+    --header-height: 5rem;
+    --header-padding: 1rem;
+    --header-bg: #ffffff;
+    --header-border-bottom: 1px solid #e0e0e0;
+    --color-foreground: #333333;
+    --color-background: #ffffff;
+    --color-primary: #007bff;
+    --color-accent: #ffc107;
+    --page-margin: 1rem;
+    --transition: all 0.3s ease;
+  }
+
+  header {
+    height: var(--header-height);
+    background-color: var(--header-bg);
+    border-bottom: var(--header-border-bottom);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 var(--header-padding);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+  }
+
+  .header__wrapper {
+    max-width: 1200px;
+    width: 100%;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .header__title {
+    margin: 0;
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--color-foreground);
+    text-decoration: none;
+    transition: var(--transition);
+  }
+
+  .header__title:hover {
+    color: var(--color-primary);
+  }
+
+  .header__menu {
+    display: flex;
+    gap: 2rem;
+    align-items: center;
+  }
+
+  .header__menu-link {
+    position: relative;
+    text-decoration: none;
+    color: var(--color-foreground);
+    font-weight: 500;
+    font-size: 1rem;
+    padding: 0.5rem 0;
+    transition: var(--transition);
+  }
+
+  .header__menu-link:hover,
+  .header__menu-link:focus {
+    color: var(--color-primary);
+  }
+
+  .header__menu-link::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 0;
+    height: 2px;
+    background-color: var(--color-primary);
+    transition: var(--transition);
+  }
+
+  .header__menu-link:hover::after,
+  .header__menu-link:focus::after {
+    width: 100%;
+  }
+
+  .header__icons {
+    display: flex;
+    gap: 1.5rem;
+    align-items: center;
+  }
+
+  .header__icon-link {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.5rem;
+    height: 2.5rem;
+    color: var(--color-foreground);
+    text-decoration: none;
+    transition: var(--transition);
+    border-radius: 50%;
+  }
+
+  .header__icon-link:hover,
+  .header__icon-link:focus {
+    background-color: rgba(0, 123, 255, 0.1);
+    color: var(--color-primary);
+    transform: scale(1.1);
+  }
+
+  header svg {
+    width: 1.5rem;
+    height: 1.5rem;
+    fill: currentColor;
+  }
+
+  .header__cart-badge {
+    position: absolute;
+    top: -0.25rem;
+    right: -0.25rem;
+    min-width: 1.25rem;
+    height: 1.25rem;
+    background-color: var(--color-accent);
+    color: var(--color-foreground);
+    border-radius: 50%;
+    font-size: 0.75rem;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
+    animation: pulse 2s infinite;
+  }
+
+  @keyframes pulse {
+    0% {
+      transform: scale(1);
+    }
+    50% {
+      transform: scale(1.05);
+    }
+    100% {
+      transform: scale(1);
+    }
+  }
+
+  /* Mobile Responsiveness */
+  @media (max-width: 768px) {
+    .header__wrapper {
+      padding: 0 0.5rem;
+    }
+
+    .header__title {
+      font-size: 1.25rem;
+    }
+
+    .header__menu {
+      display: none; /* Hide menu on mobile; consider adding a hamburger menu */
+    }
+
+    .header__icons {
+      gap: 1rem;
+    }
+
+    .header__icon-link {
+      width: 2rem;
+      height: 2rem;
+    }
+
+    header svg {
+      width: 1.25rem;
+      height: 1.25rem;
+    }
+  }
+
+  @media (max-width: 480px) {
+    header {
+      padding: 0 0.75rem;
+    }
+
+    .header__title {
+      font-size: 1.125rem;
+    }
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "Header",
+  "settings": [
+    {
+      "type": "link_list",
+      "id": "menu",
+      "label": "Menu"
+    },
+    {
+      "type": "header",
+      "content": "Colors"
+    },
+    {
+      "type": "color",
+      "id": "bg_color",
+      "label": "Background",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text",
+      "default": "#333333"
+    },
+    {
+      "type": "color",
+      "id": "accent_color",
+      "label": "Accent (e.g., links, badge)",
+      "default": "#007bff"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Header"
+    }
+  ]
+}
+{% endschema %}
