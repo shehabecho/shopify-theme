@@ -89,7 +89,7 @@
         items: 1,
         dots: false,
         nav: true,
-        navText: ["<span class='arrow_left'><span/>"],
+        navText: [],
         animateOut: 'fadeOut',
         animateIn: 'fadeIn',
         smartSpeed: 1200,
