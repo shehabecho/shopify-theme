@@ -113,36 +113,42 @@
         "instagram_1": {
           "type": "instagram_image",
           "settings": {
+            "image": "shopify://shop_images/instagram-1.jpg",
             "link": ""
           }
         },
         "instagram_2": {
           "type": "instagram_image",
           "settings": {
+            "image": "shopify://shop_images/instagram-2.jpg",
             "link": ""
           }
         },
         "instagram_3": {
           "type": "instagram_image",
           "settings": {
+            "image": "shopify://shop_images/instagram-3.jpg",
             "link": ""
           }
         },
         "instagram_4": {
           "type": "instagram_image",
           "settings": {
+            "image": "shopify://shop_images/instagram-4.jpg",
             "link": ""
           }
         },
         "instagram_5": {
           "type": "instagram_image",
           "settings": {
+            "image": "shopify://shop_images/instagram-5.jpg",
             "link": ""
           }
         },
         "instagram_6": {
           "type": "instagram_image",
           "settings": {
+            "image": "shopify://shop_images/instagram-6.jpg",
             "link": ""
           }
         }
