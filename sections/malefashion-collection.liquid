@@ -264,43 +264,6 @@
   if (currentSort) {
     document.getElementById('sort-by').value = currentSort;
   }
-
-  // Add to cart functionality
-  document.querySelectorAll('.add-cart').forEach((button) => {
-    button.addEventListener('click', function (e) {
-      e.preventDefault();
-      const variantId = this.dataset.productId;
-
-      fetch('/cart/add.js', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          id: variantId,
-          quantity: 1,
-        }),
-      })
-        .then((response) => response.json())
-        .then((data) => {
-          // Update cart count
-          fetch('/cart.js')
-            .then((response) => response.json())
-            .then((cart) => {
-              document.querySelectorAll('#cart-count, .offcanvas__nav__option span').forEach((el) => {
-                el.textContent = cart.item_count;
-              });
-              document.querySelectorAll('.price').forEach((el) => {
-                el.textContent = Shopify.formatMoney(cart.total_price);
-              });
-              alert('Product added to cart!');
-            });
-        })
-        .catch((error) => {
-          console.error('Error:', error);
-        });
-    });
-  });
 </script>
 
 {% schema %}

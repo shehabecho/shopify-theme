@@ -44,7 +44,9 @@
               <h6>
                 <a href="{{ product.url }}">{{ product.title }}</a>
               </h6>
-              <a href="#" class="add-cart" data-product-id="{{ product.id }}">+ Add To Cart</a>
+              <a href="#" class="add-cart" data-product-id="{{ product.selected_or_first_available_variant.id }}"
+                >+ Add To Cart</a
+              >
               <div class="rating">
                 {% for i in (1..5) %}
                   <i class="fa fa-star-o"></i>
@@ -79,44 +81,6 @@
     </div>
   </div>
 </section>
-
-<script>
-  document.querySelectorAll('.add-cart').forEach((button) => {
-    button.addEventListener('click', function (e) {
-      e.preventDefault();
-      const productId = this.dataset.productId;
-
-      fetch('/cart/add.js', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          id: productId,
-          quantity: 1,
-        }),
-      })
-        .then((response) => response.json())
-        .then((data) => {
-          // Update cart count
-          fetch('/cart.js')
-            .then((response) => response.json())
-            .then((cart) => {
-              document.querySelectorAll('#cart-count, .offcanvas__nav__option span').forEach((el) => {
-                el.textContent = cart.item_count;
-              });
-              document.querySelectorAll('.price').forEach((el) => {
-                el.textContent = Shopify.formatMoney(cart.total_price);
-              });
-              alert('Product added to cart!');
-            });
-        })
-        .catch((error) => {
-          console.error('Error:', error);
-        });
-    });
-  });
-</script>
 
 {% schema %}
 {
