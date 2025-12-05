@@ -84,7 +84,7 @@
     "featured_products": {
       "type": "malefashion-products",
       "settings": {
-        "collection": "",
+        "collection": "automated-collection",
         "products_to_show": 8,
         "tab_1_title": "Best Sellers",
         "tab_2_title": "New Arrivals",
