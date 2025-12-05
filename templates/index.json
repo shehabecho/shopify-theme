@@ -167,15 +167,6 @@
         "hashtag": "#Male_Fashion"
       }
     },
-    "blog": {
-      "type": "malefashion-blog",
-      "settings": {
-        "subtitle": "Latest News",
-        "title": "Fashion New Trends",
-        "blog": "news",
-        "articles_to_show": 3
-      }
-    }
   },
   "order": [
     "hero",
@@ -183,6 +174,5 @@
     "featured_products",
     "deal",
     "instagram",
-    "blog"
   ]
 }
