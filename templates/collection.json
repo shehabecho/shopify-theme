@@ -9,12 +9,6 @@
  */
 {
   "sections": {
-    "header": {
-      "type": "header",
-      "settings": {
-        "menu": "main-menu"
-      }
-    },
     "collection-products": {
       "type": "collection-products",
       "settings": {
@@ -24,14 +18,8 @@
         "accent_color": "#007bff"
       }
     },
-    "footer": {
-      "type": "footer",
-      "settings": {}
-    }
   },
   "order": [
-    "header",
-    "collection-products",
-    "footer"
+    "collection-products"
   ]
 }
