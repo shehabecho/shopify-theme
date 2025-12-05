@@ -1,0 +1,74 @@
+<header class="header">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-3 col-md-3">
+        <div class="header__logo">
+          {% if section.settings.logo %}
+            <a href="/">
+              <img src="{{ section.settings.logo | img_url: '200x' }}" alt="{{ shop.name }}">
+            </a>
+          {% else %}
+            <a href="/">
+              <h2>{{ shop.name }}</h2>
+            </a>
+          {% endif %}
+        </div>
+      </div>
+      <div class="col-lg-6 col-md-6">
+        <nav class="header__menu mobile-menu">
+          <ul>
+            {% for link in linklists[section.settings.main_menu].links %}
+              <li class="{% if link.active %}active{% endif %}">
+                <a href="{{ link.url }}">{{ link.title }}</a>
+                {% if link.links.size > 0 %}
+                  <ul class="dropdown">
+                    {% for child_link in link.links %}
+                      <li>
+                        <a href="{{ child_link.url }}">{{ child_link.title }}</a>
+                      </li>
+                    {% endfor %}
+                  </ul>
+                {% endif %}
+              </li>
+            {% endfor %}
+          </ul>
+        </nav>
+      </div>
+      <div class="col-lg-3 col-md-3">
+        <div class="header__nav__option">
+          <a href="#" class="search-switch">
+            <img src="{{ 'img/icon/search.png' | asset_url }}" alt="">
+          </a>
+          <a href="/account/login">
+            <img src="{{ 'img/icon/heart.png' | asset_url }}" alt="">
+          </a>
+          <a href="/cart">
+            <img src="{{ 'img/icon/cart.png' | asset_url }}" alt="">
+            <span id="cart-count">{{ cart.item_count }}</span>
+          </a>
+          <div class="price">{{ cart.total_price | money }}</div>
+        </div>
+      </div>
+    </div>
+    <div class="canvas__open"><i class="fa fa-bars"></i></div>
+  </div>
+</header>
+
+{% schema %}
+{
+  "name": "Main Header",
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "logo",
+      "label": "Logo Image"
+    },
+    {
+      "type": "link_list",
+      "id": "main_menu",
+      "label": "Main Menu",
+      "default": "main-menu"
+    }
+  ]
+}
+{% endschema %}
