@@ -1,0 +1,73 @@
+<section class="latest spad">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-12">
+        <div class="section-title">
+          <span>{{ section.settings.subtitle }}</span>
+          <h2>{{ section.settings.title }}</h2>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      {% assign blog = blogs[section.settings.blog] %}
+      {% for article in blog.articles limit: section.settings.articles_to_show %}
+        <div class="col-lg-4 col-md-6 col-sm-6">
+          <div class="blog__item">
+            <div
+              class="blog__item__pic set-bg"
+              data-setbg="{{ article.image | img_url: 'large' }}"
+              style="background-image: url('{{ article.image | img_url: 'large' }}');"
+            ></div>
+            <div class="blog__item__text">
+              <span>
+                <img src="{{ 'img/icon/calendar.png' | asset_url }}" alt="">
+                {{ article.published_at | date: '%d %B %Y' }}
+              </span>
+              <h5>{{ article.title }}</h5>
+              <a href="{{ article.url }}">Read More</a>
+            </div>
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Latest Blog Posts",
+  "settings": [
+    {
+      "type": "text",
+      "id": "subtitle",
+      "label": "Subtitle",
+      "default": "Latest News"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Title",
+      "default": "Fashion New Trends"
+    },
+    {
+      "type": "blog",
+      "id": "blog",
+      "label": "Blog"
+    },
+    {
+      "type": "range",
+      "id": "articles_to_show",
+      "min": 3,
+      "max": 9,
+      "step": 3,
+      "label": "Articles to show",
+      "default": 3
+    }
+  ],
+  "presets": [
+    {
+      "name": "Latest Blog Posts"
+    }
+  ]
+}
+{% endschema %}

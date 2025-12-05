@@ -1,0 +1,232 @@
+<section class="shop-details">
+  <div class="product__details__pic">
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-12">
+          <div class="product__details__breadcrumb">
+            <a href="/">Home</a>
+            <a href="/collections/all">Shop</a>
+            <span>{{ product.title }}</span>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-lg-3 col-md-3">
+          <ul class="nav nav-tabs" role="tablist">
+            {% for image in product.images limit: 4 %}
+              <li class="nav-item">
+                <a
+                  class="nav-link {% if forloop.first %}active{% endif %}"
+                  data-toggle="tab"
+                  href="#tabs-{{ forloop.index }}"
+                  role="tab"
+                >
+                  <div
+                    class="product__thumb__pic set-bg"
+                    data-setbg="{{ image | img_url: 'small' }}"
+                    style="background-image: url('{{ image | img_url: 'small' }}');"
+                  ></div>
+                </a>
+              </li>
+            {% endfor %}
+          </ul>
+        </div>
+        <div class="col-lg-6 col-md-9">
+          <div class="tab-content">
+            {% for image in product.images limit: 4 %}
+              <div
+                class="tab-pane {% if forloop.first %}active{% endif %}"
+                id="tabs-{{ forloop.index }}"
+                role="tabpanel"
+              >
+                <div class="product__details__pic__item">
+                  <img src="{{ image | img_url: 'large' }}" alt="{{ product.title }}">
+                </div>
+              </div>
+            {% endfor %}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="product__details__content">
+    <div class="container">
+      <div class="row d-flex justify-content-center">
+        <div class="col-lg-8">
+          <div class="product__details__text">
+            <h4>{{ product.title }}</h4>
+            <div class="rating">
+              {% for i in (1..5) %}
+                <i class="fa fa-star-o"></i>
+              {% endfor %}
+              <span> - {{ product.metafields.reviews.rating_count | default: 0 }} Reviews</span>
+            </div>
+            <h3>
+              {{ product.price | money }}
+              {% if product.compare_at_price > product.price %}
+                <span>{{ product.compare_at_price | money }}</span>
+              {% endif %}
+            </h3>
+            <p>{{ product.description }}</p>
+
+            <form action="/cart/add" method="post" enctype="multipart/form-data" id="product-form-{{ product.id }}">
+              <div class="product__details__option">
+                {% unless product.has_only_default_variant %}
+                  {% for option in product.options_with_values %}
+                    <div class="product__details__option__size">
+                      <span>{{ option.name }}:</span>
+                      {% for value in option.values %}
+                        <label
+                          {% if forloop.first %}
+                            class="active"
+                          {% endif %}
+                          for="{{ option.name }}-{{ value | handleize }}"
+                        >
+                          {{ value }}
+                          <input
+                            type="radio"
+                            id="{{ option.name }}-{{ value | handleize }}"
+                            name="options[{{ option.name }}]"
+                            value="{{ value }}"
+                            {% if forloop.first %}
+                              checked
+                            {% endif %}
+                          >
+                        </label>
+                      {% endfor %}
+                    </div>
+                  {% endfor %}
+                {% endunless %}
+              </div>
+
+              <input type="hidden" name="id" value="{{ product.selected_or_first_available_variant.id }}">
+
+              <div class="product__details__cart__option">
+                <div class="quantity">
+                  <div class="pro-qty">
+                    <input type="number" name="quantity" value="1" min="1">
+                  </div>
+                </div>
+                <button type="submit" class="primary-btn">add to cart</button>
+              </div>
+            </form>
+
+            <div class="product__details__btns__option">
+              <a href="#"><i class="fa fa-heart"></i> add to wishlist</a>
+              <a href="#"><i class="fa fa-exchange"></i> Add To Compare</a>
+            </div>
+            <div class="product__details__last__option">
+              <h5><span>Guaranteed Safe Checkout</span></h5>
+              <ul>
+                <li><span>SKU:</span> {{ product.selected_or_first_available_variant.sku | default: 'N/A' }}</li>
+                <li><span>Categories:</span> {{ product.type }}</li>
+                <li><span>Tags:</span> {{ product.tags | join: ', ' }}</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-lg-12">
+          <div class="product__details__tab">
+            <ul class="nav nav-tabs" role="tablist">
+              <li class="nav-item">
+                <a class="nav-link active" data-toggle="tab" href="#tabs-5" role="tab">Description</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" data-toggle="tab" href="#tabs-7" role="tab">Additional information</a>
+              </li>
+            </ul>
+            <div class="tab-content">
+              <div class="tab-pane active" id="tabs-5" role="tabpanel">
+                <div class="product__details__tab__content">
+                  <div class="product__details__tab__content__item">
+                    <h5>Product Information</h5>
+                    {{ product.description }}
+                  </div>
+                </div>
+              </div>
+              <div class="tab-pane" id="tabs-7" role="tabpanel">
+                <div class="product__details__tab__content">
+                  <div class="product__details__tab__content__item">
+                    <h5>Additional Information</h5>
+                    {% if product.metafields.custom.additional_info %}
+                      {{ product.metafields.custom.additional_info }}
+                    {% else %}
+                      <p>No additional information available.</p>
+                    {% endif %}
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+  // Handle variant selection
+  document.querySelectorAll('[name^="options"]').forEach(radio => {
+      radio.addEventListener('change', function() {
+          // Get all selected options
+          const selectedOptions = {};
+          document.querySelectorAll('[name^="options"]:checked').forEach(input => {
+              const optionName = input.name.match(/\[(.*?)\]/)[1];
+              selectedOptions[optionName] = input.value;
+          });
+
+          // Find matching variant
+          const variants = {{ product.variants | json }};
+          const matchingVariant = variants.find(variant => {
+              return Object.keys(selectedOptions).every(optionName => {
+                  const optionIndex = {{ product.options_with_values | map: 'name' | json }}.indexOf(optionName) + 1;
+                  return variant['option' + optionIndex] === selectedOptions[optionName];
+              });
+          });
+
+          if (matchingVariant) {
+              document.querySelector('[name="id"]').value = matchingVariant.id;
+          }
+      });
+  });
+
+  // Handle form submission
+  document.getElementById('product-form-{{ product.id }}').addEventListener('submit', function(e) {
+      e.preventDefault();
+
+      const formData = new FormData(this);
+
+      fetch('/cart/add.js', {
+          method: 'POST',
+          body: formData
+      })
+      .then(response => response.json())
+      .then(data => {
+          // Update cart count
+          fetch('/cart.js')
+              .then(response => response.json())
+              .then(cart => {
+                  document.querySelectorAll('#cart-count, .offcanvas__nav__option span').forEach(el => {
+                      el.textContent = cart.item_count;
+                  });
+                  document.querySelectorAll('.price').forEach(el => {
+                      el.textContent = Shopify.formatMoney(cart.total_price);
+                  });
+                  alert('Product added to cart!');
+              });
+      })
+      .catch(error => {
+          console.error('Error:', error);
+          alert('Error adding product to cart');
+      });
+  });
+</script>
+
+{% schema %}
+{
+  "name": "Product Details",
+  "settings": []
+}
+{% endschema %}

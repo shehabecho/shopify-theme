@@ -1,75 +1,164 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
 {
   "sections": {
-    "header": {
-      "type": "header",
+    "hero": {
+      "type": "malefashion-hero",
+      "blocks": {
+        "slide_1": {
+          "type": "slide",
+          "settings": {
+            "subtitle": "Summer Collection",
+            "title": "Fall - Winter Collections 2024",
+            "description": "A specialist label creating luxury essentials. Ethically crafted with an unwavering commitment to exceptional quality.",
+            "button_text": "Shop now",
+            "button_link": "/collections/all"
+          }
+        },
+        "slide_2": {
+          "type": "slide",
+          "settings": {
+            "subtitle": "New Arrivals",
+            "title": "Spring Collection 2024",
+            "description": "Discover the latest trends in fashion. Premium quality meets contemporary style.",
+            "button_text": "Shop now",
+            "button_link": "/collections/all"
+          }
+        }
+      },
+      "block_order": [
+        "slide_1",
+        "slide_2"
+      ],
       "settings": {
-        "menu": "main-menu"
+        "facebook_url": "",
+        "twitter_url": "",
+        "pinterest_url": "",
+        "instagram_url": ""
       }
     },
-    "hero-banner": {
-      "type": "hero-banner",
+    "banner": {
+      "type": "malefashion-banner",
+      "blocks": {
+        "banner_1": {
+          "type": "banner",
+          "settings": {
+            "title": "Clothing Collections 2024",
+            "link": "/collections/all"
+          }
+        },
+        "banner_2": {
+          "type": "banner",
+          "settings": {
+            "title": "Accessories",
+            "link": "/collections/accessories"
+          }
+        },
+        "banner_3": {
+          "type": "banner",
+          "settings": {
+            "title": "Shoes Spring 2024",
+            "link": "/collections/shoes"
+          }
+        }
+      },
+      "block_order": [
+        "banner_1",
+        "banner_2",
+        "banner_3"
+      ],
+      "settings": {}
+    },
+    "featured_products": {
+      "type": "malefashion-products",
       "settings": {
-        "title": "Welcome to Our Store",
-        "subtitle": "Discover amazing products at unbeatable prices",
-        "button_text": "Shop Now",
-        "button_link": "/collections/all"
+        "collection": "",
+        "products_to_show": 8,
+        "tab_1_title": "Best Sellers",
+        "tab_2_title": "New Arrivals",
+        "tab_3_title": "Hot Sales"
       }
     },
-    "featured-collections": {
-      "type": "featured-collections",
+    "deal": {
+      "type": "malefashion-deal",
       "settings": {
-        "title": "Shop by Category"
+        "heading_line_1": "Clothings Hot",
+        "heading_line_2": "Shoe Collection",
+        "heading_line_3": "Accessories",
+        "deal_label": "Sale Of",
+        "deal_price": "$29.99",
+        "countdown_title": "Deal Of The Week",
+        "deal_product_title": "Multi-pocket Chest Bag Black",
+        "enable_countdown": true,
+        "countdown_date": "2024-12-31 23:59:59",
+        "deal_link": "/collections/all"
       }
     },
-    "featured-products": {
-      "type": "featured-products",
+    "instagram": {
+      "type": "malefashion-instagram",
+      "blocks": {
+        "instagram_1": {
+          "type": "instagram_image",
+          "settings": {}
+        },
+        "instagram_2": {
+          "type": "instagram_image",
+          "settings": {}
+        },
+        "instagram_3": {
+          "type": "instagram_image",
+          "settings": {}
+        },
+        "instagram_4": {
+          "type": "instagram_image",
+          "settings": {}
+        },
+        "instagram_5": {
+          "type": "instagram_image",
+          "settings": {}
+        },
+        "instagram_6": {
+          "type": "instagram_image",
+          "settings": {}
+        }
+      },
+      "block_order": [
+        "instagram_1",
+        "instagram_2",
+        "instagram_3",
+        "instagram_4",
+        "instagram_5",
+        "instagram_6"
+      ],
       "settings": {
-        "title": "Bestsellers",
-        "products_to_show": 8
+        "title": "Instagram",
+        "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+        "hashtag": "#Male_Fashion"
       }
     },
-    "features": {
-      "type": "features-section",
+    "blog": {
+      "type": "malefashion-blog",
       "settings": {
-        "title": "Why Shop With Us"
-      }
-    },
-    "image-with-text": {
-      "type": "image-with-text",
-      "settings": {
-        "title": "Our Story",
-        "text": "Learn about our journey and commitment to quality"
-      }
-    },
-    "testimonials": {
-      "type": "testimonials",
-      "settings": {
-        "title": "What Our Customers Say"
-      }
-    },
-    "newsletter": {
-      "type": "newsletter-section",
-      "settings": {
-        "title": "Stay Updated",
-        "subtitle": "Subscribe to get special offers and updates"
-      }
-    },
-    "footer": {
-      "type": "footer",
-      "settings": {
-        "newsletter_enable": true
+        "subtitle": "Latest News",
+        "title": "Fashion New Trends",
+        "blog": "news",
+        "articles_to_show": 3
       }
     }
   },
   "order": [
-    "header",
-    "hero-banner",
-    "featured-collections",
-    "featured-products",
-    "features",
-    "image-with-text",
-    "testimonials",
-    "newsletter",
-    "footer"
+    "hero",
+    "banner",
+    "featured_products",
+    "deal",
+    "instagram",
+    "blog"
   ]
 }

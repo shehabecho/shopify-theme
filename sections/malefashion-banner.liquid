@@ -1,0 +1,78 @@
+<section class="banner spad">
+    <div class="container">
+        <div class="row">
+            {% for block in section.blocks %}
+                {% if forloop.first %}
+                    <div class="col-lg-7 offset-lg-4" {{ block.shopify_attributes }}>
+                {% elsif forloop.index == 2 %}
+                    <div class="col-lg-5" {{ block.shopify_attributes }}>
+                {% else %}
+                    <div class="col-lg-7" {{ block.shopify_attributes }}>
+                {% endif %}
+                    <div class="banner__item {% if forloop.index == 2 %}banner__item--middle{% elsif forloop.index == 3 %}banner__item--last{% endif %}">
+                        <div class="banner__item__pic">
+                            {% if block.settings.image %}
+                                <img src="{{ block.settings.image | img_url: 'master' }}" alt="{{ block.settings.title }}">
+                            {% endif %}
+                        </div>
+                        <div class="banner__item__text">
+                            {% if block.settings.title %}
+                                <h2>{{ block.settings.title }}</h2>
+                            {% endif %}
+                            {% if block.settings.link %}
+                                <a href="{{ block.settings.link }}">Shop now</a>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+{% schema %}
+{
+  "name": "Banner Section",
+  "max_blocks": 3,
+  "blocks": [
+    {
+      "type": "banner",
+      "name": "Banner Item",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Banner Image"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title",
+          "default": "Clothing Collections 2024"
+        },
+        {
+          "type": "url",
+          "id": "link",
+          "label": "Link"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Banner Section",
+      "blocks": [
+        {
+          "type": "banner"
+        },
+        {
+          "type": "banner"
+        },
+        {
+          "type": "banner"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

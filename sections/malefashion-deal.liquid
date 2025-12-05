@@ -1,0 +1,171 @@
+<section class="categories spad">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-3">
+        <div class="categories__text">
+          <h2>
+            {{ section.settings.heading_line_1 }}
+            <br>
+            <span>{{ section.settings.heading_line_2 }}</span> <br>
+            {{ section.settings.heading_line_3 }}
+          </h2>
+        </div>
+      </div>
+      <div class="col-lg-4">
+        <div class="categories__hot__deal">
+          {% if section.settings.deal_image %}
+            <img src="{{ section.settings.deal_image | img_url: 'large' }}" alt="Deal">
+          {% endif %}
+          <div class="hot__deal__sticker">
+            <span>{{ section.settings.deal_label }}</span>
+            <h5>{{ section.settings.deal_price }}</h5>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-4 offset-lg-1">
+        <div class="categories__deal__countdown">
+          <span>{{ section.settings.countdown_title }}</span>
+          <h2>{{ section.settings.deal_product_title }}</h2>
+          {% if section.settings.enable_countdown %}
+            <div class="categories__deal__countdown__timer" id="countdown-{{ section.id }}">
+              <div class="cd-item">
+                <span class="days">0</span>
+                <p>Days</p>
+              </div>
+              <div class="cd-item">
+                <span class="hours">0</span>
+                <p>Hours</p>
+              </div>
+              <div class="cd-item">
+                <span class="minutes">0</span>
+                <p>Minutes</p>
+              </div>
+              <div class="cd-item">
+                <span class="seconds">0</span>
+                <p>Seconds</p>
+              </div>
+            </div>
+          {% endif %}
+          {% if section.settings.deal_link %}
+            <a href="{{ section.settings.deal_link }}" class="primary-btn">Shop now</a>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+{% if section.settings.enable_countdown %}
+  <script>
+    (function () {
+      const countdownDate = new Date('{{ section.settings.countdown_date }}').getTime();
+      const countdownElement = document.getElementById('countdown-{{ section.id }}');
+
+      if (!countdownElement) return;
+
+      const updateCountdown = function () {
+        const now = new Date().getTime();
+        const distance = countdownDate - now;
+
+        if (distance < 0) {
+          countdownElement.querySelector('.days').textContent = '0';
+          countdownElement.querySelector('.hours').textContent = '0';
+          countdownElement.querySelector('.minutes').textContent = '0';
+          countdownElement.querySelector('.seconds').textContent = '0';
+          return;
+        }
+
+        const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+        const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+        const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+        countdownElement.querySelector('.days').textContent = days;
+        countdownElement.querySelector('.hours').textContent = hours;
+        countdownElement.querySelector('.minutes').textContent = minutes;
+        countdownElement.querySelector('.seconds').textContent = seconds;
+      };
+
+      updateCountdown();
+      setInterval(updateCountdown, 1000);
+    })();
+  </script>
+{% endif %}
+
+{% schema %}
+{
+  "name": "Deal of the Week",
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading_line_1",
+      "label": "Heading Line 1",
+      "default": "Clothings Hot"
+    },
+    {
+      "type": "text",
+      "id": "heading_line_2",
+      "label": "Heading Line 2 (Highlighted)",
+      "default": "Shoe Collection"
+    },
+    {
+      "type": "text",
+      "id": "heading_line_3",
+      "label": "Heading Line 3",
+      "default": "Accessories"
+    },
+    {
+      "type": "image_picker",
+      "id": "deal_image",
+      "label": "Deal Product Image"
+    },
+    {
+      "type": "text",
+      "id": "deal_label",
+      "label": "Deal Label",
+      "default": "Sale Of"
+    },
+    {
+      "type": "text",
+      "id": "deal_price",
+      "label": "Deal Price",
+      "default": "$29.99"
+    },
+    {
+      "type": "text",
+      "id": "countdown_title",
+      "label": "Countdown Title",
+      "default": "Deal Of The Week"
+    },
+    {
+      "type": "text",
+      "id": "deal_product_title",
+      "label": "Deal Product Title",
+      "default": "Multi-pocket Chest Bag Black"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_countdown",
+      "label": "Enable Countdown",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "countdown_date",
+      "label": "Countdown End Date",
+      "info": "Format: YYYY-MM-DD HH:MM:SS",
+      "default": "2024-12-31 23:59:59"
+    },
+    {
+      "type": "url",
+      "id": "deal_link",
+      "label": "Deal Link"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Deal of the Week"
+    }
+  ]
+}
+{% endschema %}

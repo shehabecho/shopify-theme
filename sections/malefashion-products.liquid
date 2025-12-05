@@ -1,0 +1,164 @@
+<section class="product spad">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-12">
+        <ul class="filter__controls">
+          <li class="active" data-filter="*">{{ section.settings.tab_1_title }}</li>
+          {% if section.settings.tab_2_title %}
+            <li data-filter=".new-arrivals">{{ section.settings.tab_2_title }}</li>
+          {% endif %}
+          {% if section.settings.tab_3_title %}
+            <li data-filter=".hot-sales">{{ section.settings.tab_3_title }}</li>
+          {% endif %}
+        </ul>
+      </div>
+    </div>
+    <div class="row product__filter">
+      {% assign collection = collections[section.settings.collection] %}
+      {% for product in collection.products limit: section.settings.products_to_show %}
+        <div class="col-lg-3 col-md-6 col-sm-6 mix {% cycle 'new-arrivals', 'hot-sales', 'new-arrivals', 'hot-sales' %}">
+          <div class="product__item {% if product.compare_at_price > product.price %}sale{% endif %}">
+            <div
+              class="product__item__pic set-bg"
+              data-setbg="{{ product.featured_image | img_url: 'medium' }}"
+              style="background-image: url('{{ product.featured_image | img_url: 'medium' }}');"
+            >
+              {% if product.compare_at_price > product.price %}
+                <span class="label">Sale</span>
+              {% elsif product.tags contains 'new' %}
+                <span class="label">New</span>
+              {% endif %}
+              <ul class="product__hover">
+                <li>
+                  <a href="#"><img src="{{ 'img/icon/heart.png' | asset_url }}" alt=""></a>
+                </li>
+                <li>
+                  <a href="#"><img src="{{ 'img/icon/compare.png' | asset_url }}" alt=""> <span>Compare</span></a>
+                </li>
+                <li>
+                  <a href="{{ product.url }}"><img src="{{ 'img/icon/search.png' | asset_url }}" alt=""></a>
+                </li>
+              </ul>
+            </div>
+            <div class="product__item__text">
+              <h6>
+                <a href="{{ product.url }}">{{ product.title }}</a>
+              </h6>
+              <a href="#" class="add-cart" data-product-id="{{ product.id }}">+ Add To Cart</a>
+              <div class="rating">
+                {% for i in (1..5) %}
+                  <i class="fa fa-star-o"></i>
+                {% endfor %}
+              </div>
+              <h5>
+                {% if product.compare_at_price > product.price %}
+                  <span style="text-decoration: line-through; color: #b7b7b7;">
+                    {{- product.compare_at_price | money -}}
+                  </span>
+                {% endif %}
+                {{ product.price | money }}
+              </h5>
+              {% if product.variants.size > 1 %}
+                <div class="product__color__select">
+                  {% for variant in product.variants limit: 3 %}
+                    <label
+                      {% if forloop.first %}
+                        class="active black"
+                      {% endif %}
+                      for="pc-{{ product.id }}-{{ forloop.index }}"
+                    >
+                      <input type="radio" id="pc-{{ product.id }}-{{ forloop.index }}" name="variant-{{ product.id }}">
+                    </label>
+                  {% endfor %}
+                </div>
+              {% endif %}
+            </div>
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+<script>
+  document.querySelectorAll('.add-cart').forEach((button) => {
+    button.addEventListener('click', function (e) {
+      e.preventDefault();
+      const productId = this.dataset.productId;
+
+      fetch('/cart/add.js', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          id: productId,
+          quantity: 1,
+        }),
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          // Update cart count
+          fetch('/cart.js')
+            .then((response) => response.json())
+            .then((cart) => {
+              document.querySelectorAll('#cart-count, .offcanvas__nav__option span').forEach((el) => {
+                el.textContent = cart.item_count;
+              });
+              document.querySelectorAll('.price').forEach((el) => {
+                el.textContent = Shopify.formatMoney(cart.total_price);
+              });
+              alert('Product added to cart!');
+            });
+        })
+        .catch((error) => {
+          console.error('Error:', error);
+        });
+    });
+  });
+</script>
+
+{% schema %}
+{
+  "name": "Featured Products",
+  "settings": [
+    {
+      "type": "collection",
+      "id": "collection",
+      "label": "Collection"
+    },
+    {
+      "type": "range",
+      "id": "products_to_show",
+      "min": 4,
+      "max": 16,
+      "step": 4,
+      "label": "Products to show",
+      "default": 8
+    },
+    {
+      "type": "text",
+      "id": "tab_1_title",
+      "label": "Tab 1 Title",
+      "default": "Best Sellers"
+    },
+    {
+      "type": "text",
+      "id": "tab_2_title",
+      "label": "Tab 2 Title",
+      "default": "New Arrivals"
+    },
+    {
+      "type": "text",
+      "id": "tab_3_title",
+      "label": "Tab 3 Title",
+      "default": "Hot Sales"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Featured Products"
+    }
+  ]
+}
+{% endschema %}
