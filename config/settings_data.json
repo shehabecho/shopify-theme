@@ -28,7 +28,9 @@
       "malefashion-footer": {
         "type": "malefashion-footer",
         "settings": {
+          "footer_logo": "shopify://shop_images/footer-logo.png",
           "footer_description": "The customer is at the heart of our unique business model, which includes design.",
+          "payment_image": "shopify://shop_images/payment.png",
           "menu_1_title": "Shopping",
           "menu_1": "footer",
           "menu_2_title": "Customer Service",
