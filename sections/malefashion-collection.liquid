@@ -1,0 +1,311 @@
+<!-- Breadcrumb Section Begin -->
+<section class="breadcrumb-option">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-12">
+        <div class="breadcrumb__text">
+          <h4>{{ collection.title }}</h4>
+          <div class="breadcrumb__links">
+            <a href="/">Home</a>
+            <span>{{ collection.title }}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- Breadcrumb Section End -->
+
+<!-- Shop Section Begin -->
+<section class="shop spad">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-3">
+        <div class="shop__sidebar">
+          <div class="shop__sidebar__search">
+            <form action="/search" method="get">
+              <input type="text" name="q" placeholder="Search..." value="{{ search.terms }}">
+              <button type="submit"><span class="icon_search"></span></button>
+            </form>
+          </div>
+          <div class="shop__sidebar__accordion">
+            <div class="accordion" id="accordionExample">
+              <!-- Categories -->
+              <div class="card">
+                <div class="card-heading">
+                  <a data-toggle="collapse" data-target="#collapseOne">Categories</a>
+                </div>
+                <div id="collapseOne" class="collapse show" data-parent="#accordionExample">
+                  <div class="card-body">
+                    <div class="shop__sidebar__categories">
+                      <ul class="nice-scroll">
+                        {% for collection_item in collections %}
+                          {% if collection_item.all_products_count > 0 %}
+                            <li>
+                              <a href="{{ collection_item.url }}">
+                                {{ collection_item.title }} ({{ collection_item.all_products_count }})
+                              </a>
+                            </li>
+                          {% endif %}
+                        {% endfor %}
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Filter Price -->
+              <div class="card">
+                <div class="card-heading">
+                  <a data-toggle="collapse" data-target="#collapseThree">Filter Price</a>
+                </div>
+                <div id="collapseThree" class="collapse show" data-parent="#accordionExample">
+                  <div class="card-body">
+                    <div class="shop__sidebar__price">
+                      <ul>
+                        <li>
+                          <a href="{{ collection.url }}?filter.v.price.gte=0&filter.v.price.lte=50">$0.00 - $50.00</a>
+                        </li>
+                        <li>
+                          <a href="{{ collection.url }}?filter.v.price.gte=50&filter.v.price.lte=100"
+                            >$50.00 - $100.00</a
+                          >
+                        </li>
+                        <li>
+                          <a href="{{ collection.url }}?filter.v.price.gte=100&filter.v.price.lte=150"
+                            >$100.00 - $150.00</a
+                          >
+                        </li>
+                        <li>
+                          <a href="{{ collection.url }}?filter.v.price.gte=150&filter.v.price.lte=200"
+                            >$150.00 - $200.00</a
+                          >
+                        </li>
+                        <li>
+                          <a href="{{ collection.url }}?filter.v.price.gte=200&filter.v.price.lte=250"
+                            >$200.00 - $250.00</a
+                          >
+                        </li>
+                        <li><a href="{{ collection.url }}?filter.v.price.gte=250">$250.00+</a></li>
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Tags -->
+              {% if collection.all_tags.size > 0 %}
+                <div class="card">
+                  <div class="card-heading">
+                    <a data-toggle="collapse" data-target="#collapseSix">Tags</a>
+                  </div>
+                  <div id="collapseSix" class="collapse show" data-parent="#accordionExample">
+                    <div class="card-body">
+                      <div class="shop__sidebar__tags">
+                        {% for tag in collection.all_tags %}
+                          <a href="{{ collection.url }}/{{ tag | handle }}">{{ tag }}</a>
+                        {% endfor %}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              {% endif %}
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-9">
+        <div class="shop__product__option">
+          <div class="row">
+            <div class="col-lg-6 col-md-6 col-sm-6">
+              <div class="shop__product__option__left">
+                <p>
+                  Showing {{ paginate.current_offset | plus: 1 }}–
+                  {{- paginate.current_offset | plus: paginate.page_size | at_most: collection.products_count }}
+                  of {{ collection.products_count }} results
+                </p>
+              </div>
+            </div>
+            <div class="col-lg-6 col-md-6 col-sm-6">
+              <div class="shop__product__option__right">
+                <p>Sort by Price:</p>
+                <select id="sort-by">
+                  <option value="manual">Featured</option>
+                  <option value="price-ascending">Price: Low to High</option>
+                  <option value="price-descending">Price: High to Low</option>
+                  <option value="title-ascending">A-Z</option>
+                  <option value="title-descending">Z-A</option>
+                  <option value="created-descending">Newest</option>
+                  <option value="best-selling">Best Selling</option>
+                </select>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {% paginate collection.products by 12 %}
+          <div class="row">
+            {% for product in collection.products %}
+              <div class="col-lg-4 col-md-6 col-sm-6">
+                <div class="product__item {% if product.compare_at_price > product.price %}sale{% endif %}">
+                  <div
+                    class="product__item__pic set-bg"
+                    data-setbg="{{ product.featured_image | img_url: 'medium' }}"
+                    style="background-image: url('{{ product.featured_image | img_url: 'medium' }}');"
+                  >
+                    {% if product.compare_at_price > product.price %}
+                      <span class="label">Sale</span>
+                    {% elsif product.tags contains 'new' %}
+                      <span class="label">New</span>
+                    {% endif %}
+                    <ul class="product__hover">
+                      <li>
+                        <a href="#"><img src="{{ 'img/icon/heart.png' | asset_url }}" alt=""></a>
+                      </li>
+                      <li>
+                        <a href="#"><img src="{{ 'img/icon/compare.png' | asset_url }}" alt=""> <span>Compare</span></a>
+                      </li>
+                      <li>
+                        <a href="{{ product.url }}"><img src="{{ 'img/icon/search.png' | asset_url }}" alt=""></a>
+                      </li>
+                    </ul>
+                  </div>
+                  <div class="product__item__text">
+                    <h6>
+                      <a href="{{ product.url }}">{{ product.title }}</a>
+                    </h6>
+                    <a href="#" class="add-cart" data-product-id="{{ product.selected_or_first_available_variant.id }}"
+                      >+ Add To Cart</a
+                    >
+                    <div class="rating">
+                      {% for i in (1..5) %}
+                        <i class="fa fa-star-o"></i>
+                      {% endfor %}
+                    </div>
+                    <h5>
+                      {% if product.compare_at_price > product.price %}
+                        <span style="text-decoration: line-through; color: #b7b7b7;">
+                          {{- product.compare_at_price | money -}}
+                        </span>
+                      {% endif %}
+                      {{ product.price | money }}
+                    </h5>
+                    {% if product.variants.size > 1 %}
+                      <div class="product__color__select">
+                        {% for variant in product.variants limit: 3 %}
+                          <label
+                            {% if forloop.first %}
+                              class="active black"
+                            {% endif %}
+                            for="pc-{{ product.id }}-{{ forloop.index }}"
+                          >
+                            <input
+                              type="radio"
+                              id="pc-{{ product.id }}-{{ forloop.index }}"
+                              name="variant-{{ product.id }}"
+                            >
+                          </label>
+                        {% endfor %}
+                      </div>
+                    {% endif %}
+                  </div>
+                </div>
+              </div>
+            {% endfor %}
+          </div>
+
+          <!-- Pagination -->
+          {% if paginate.pages > 1 %}
+            <div class="row">
+              <div class="col-lg-12">
+                <div class="product__pagination">
+                  {% if paginate.previous %}
+                    <a href="{{ paginate.previous.url }}">←</a>
+                  {% endif %}
+
+                  {% for part in paginate.parts %}
+                    {% if part.is_link %}
+                      <a href="{{ part.url }}">{{ part.title }}</a>
+                    {% else %}
+                      {% if part.title == paginate.current_page %}
+                        <a class="active" href="{{ part.url }}">{{ part.title }}</a>
+                      {% else %}
+                        <span>{{ part.title }}</span>
+                      {% endif %}
+                    {% endif %}
+                  {% endfor %}
+
+                  {% if paginate.next %}
+                    <a href="{{ paginate.next.url }}">→</a>
+                  {% endif %}
+                </div>
+              </div>
+            </div>
+          {% endif %}
+        {% endpaginate %}
+      </div>
+    </div>
+  </div>
+</section>
+<!-- Shop Section End -->
+
+<script>
+  // Sort by functionality
+  document.getElementById('sort-by').addEventListener('change', function () {
+    const sortValue = this.value;
+    const url = new URL(window.location.href);
+    url.searchParams.set('sort_by', sortValue);
+    window.location.href = url.toString();
+  });
+
+  // Set current sort value
+  const urlParams = new URLSearchParams(window.location.search);
+  const currentSort = urlParams.get('sort_by');
+  if (currentSort) {
+    document.getElementById('sort-by').value = currentSort;
+  }
+
+  // Add to cart functionality
+  document.querySelectorAll('.add-cart').forEach((button) => {
+    button.addEventListener('click', function (e) {
+      e.preventDefault();
+      const variantId = this.dataset.productId;
+
+      fetch('/cart/add.js', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          id: variantId,
+          quantity: 1,
+        }),
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          // Update cart count
+          fetch('/cart.js')
+            .then((response) => response.json())
+            .then((cart) => {
+              document.querySelectorAll('#cart-count, .offcanvas__nav__option span').forEach((el) => {
+                el.textContent = cart.item_count;
+              });
+              document.querySelectorAll('.price').forEach((el) => {
+                el.textContent = Shopify.formatMoney(cart.total_price);
+              });
+              alert('Product added to cart!');
+            });
+        })
+        .catch((error) => {
+          console.error('Error:', error);
+        });
+    });
+  });
+</script>
+
+{% schema %}
+{
+  "name": "Collection Page",
+  "settings": []
+}
+{% endschema %}
