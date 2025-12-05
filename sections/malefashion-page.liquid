@@ -1,0 +1,98 @@
+<!-- Breadcrumb Section Begin -->
+<section class="breadcrumb-option">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-12">
+        <div class="breadcrumb__text">
+          <h4>{{ page.title }}</h4>
+          <div class="breadcrumb__links">
+            <a href="/">Home</a>
+            <span>{{ page.title }}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- Breadcrumb Section End -->
+
+<!-- Page Content Section Begin -->
+<section class="page-content spad">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-12">
+        <div class="page__content">
+          {{ page.content }}
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- Page Content Section End -->
+
+<style>
+  .page__content {
+    font-size: 16px;
+    line-height: 1.8;
+    color: #6f6f6f;
+  }
+
+  .page__content h1,
+  .page__content h2,
+  .page__content h3,
+  .page__content h4,
+  .page__content h5,
+  .page__content h6 {
+    color: #111111;
+    margin-bottom: 20px;
+    margin-top: 30px;
+  }
+
+  .page__content h1 {
+    font-size: 36px;
+  }
+
+  .page__content h2 {
+    font-size: 30px;
+  }
+
+  .page__content h3 {
+    font-size: 24px;
+  }
+
+  .page__content p {
+    margin-bottom: 20px;
+  }
+
+  .page__content img {
+    max-width: 100%;
+    height: auto;
+    margin: 20px 0;
+  }
+
+  .page__content ul,
+  .page__content ol {
+    margin-bottom: 20px;
+    padding-left: 30px;
+  }
+
+  .page__content li {
+    margin-bottom: 10px;
+  }
+
+  .page__content a {
+    color: #e53637;
+    text-decoration: underline;
+  }
+
+  .page__content a:hover {
+    color: #111111;
+  }
+</style>
+
+{% schema %}
+{
+  "name": "Page Content",
+  "settings": []
+}
+{% endschema %}

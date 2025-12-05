@@ -11,27 +11,6 @@
   "current": {
     "logo": "shopify://shop_images/Shopify_Training_1.png",
     "header_nav": "main-menu",
-    "sections": {
-      "malefashion-header": {
-        "type": "malefashion-header",
-        "settings": {
-          "logo": "shopify://shop_images/logo.png",
-          "announcement_text": "Free shipping, 30-day return or refund guarantee."
-        }
-      },
-      "malefashion-footer": {
-        "type": "malefashion-footer",
-        "settings": {
-          "footer_description": "The customer is at the heart of our unique business model, which includes design.",
-          "menu_1_title": "Shopping",
-          "menu_1": "footer",
-          "menu_2_title": "Customer Service",
-          "menu_2": "footer",
-          "newsletter_text": "Be the first to know about new arrivals, look books, sales & promos!",
-          "copyright_text": "Copyright © 2024 All rights reserved"
-        }
-      }
-    },
     "content_for_index": []
   }
 }

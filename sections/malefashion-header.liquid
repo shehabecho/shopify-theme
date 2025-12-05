@@ -47,29 +47,20 @@
       <div class="col-lg-6 col-md-6">
         <nav class="header__menu mobile-menu">
           <ul>
-            <li class="{% if request.path == '/' %}active{% endif %}">
-              <a href="/">Home</a>
-            </li>
-            <li class="{% if request.path contains '/collections' %}active{% endif %}">
-              <a href="/collections/all">Shop</a>
-            </li>
-            <li>
-              <a href="#">Pages</a>
-              <ul class="dropdown">
-                <li><a href="/pages/about">About Us</a></li>
-                <li><a href="/cart">Shopping Cart</a></li>
-                <li><a href="/pages/contact">Contact</a></li>
-                {% if blogs.news.articles_count > 0 %}
-                  <li><a href="/blogs/news">Blog</a></li>
+            {% for link in linklists[section.settings.main_menu].links %}
+              <li class="{% if link.active %}active{% endif %}">
+                <a href="{{ link.url }}">{{ link.title }}</a>
+                {% if link.links.size > 0 %}
+                  <ul class="dropdown">
+                    {% for child_link in link.links %}
+                      <li>
+                        <a href="{{ child_link.url }}">{{ child_link.title }}</a>
+                      </li>
+                    {% endfor %}
+                  </ul>
                 {% endif %}
-              </ul>
-            </li>
-            {% if blogs.news.articles_count > 0 %}
-              <li class="{% if request.path contains '/blogs' %}active{% endif %}">
-                <a href="/blogs/news">Blog</a>
               </li>
-            {% endif %}
-            <li><a href="/pages/contact">Contact</a></li>
+            {% endfor %}
           </ul>
         </nav>
       </div>
@@ -107,6 +98,12 @@
       "id": "announcement_text",
       "label": "Announcement Text",
       "default": "Free shipping, 30-day return or refund guarantee."
+    },
+    {
+      "type": "link_list",
+      "id": "main_menu",
+      "label": "Main Menu",
+      "default": "main-menu"
     }
   ]
 }
