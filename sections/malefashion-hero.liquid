@@ -48,6 +48,52 @@
   </div>
 </section>
 
+<style>
+  /* Fix Owl Carousel Navigation Arrows */
+  .owl-carousel .owl-nav button.owl-prev,
+  .owl-carousel .owl-nav button.owl-next {
+    font-family: 'FontAwesome' !important;
+    font-size: 24px !important;
+  }
+
+  .owl-carousel .owl-nav button.owl-prev:before {
+    content: '\f104' !important; /* fa-angle-left */
+  }
+
+  .owl-carousel .owl-nav button.owl-next:before {
+    content: '\f105' !important; /* fa-angle-right */
+  }
+
+  .owl-carousel .owl-nav button.owl-prev,
+  .owl-carousel .owl-nav button.owl-next {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: rgba(255, 255, 255, 0.9) !important;
+    color: #111 !important;
+    width: 50px;
+    height: 50px;
+    line-height: 50px !important;
+    text-align: center;
+    border-radius: 50%;
+    transition: all 0.3s;
+  }
+
+  .owl-carousel .owl-nav button.owl-prev:hover,
+  .owl-carousel .owl-nav button.owl-next:hover {
+    background: #e53637 !important;
+    color: #fff !important;
+  }
+
+  .owl-carousel .owl-nav button.owl-prev {
+    left: 20px;
+  }
+
+  .owl-carousel .owl-nav button.owl-next {
+    right: 20px;
+  }
+</style>
+
 {% schema %}
 {
   "name": "Hero Banner",
