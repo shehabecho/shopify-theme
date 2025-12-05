@@ -9,24 +9,14 @@
  */
 {
   "sections": {
-    "header": {
-      "type": "header",
+    "cart_page": {
+      "type": "malefashion-cart",
       "settings": {
-        "menu": "main-menu"
+        "enable_discount_code": true
       }
-    },
-    "main": {
-      "type": "main-cart",
-      "settings": {}
-    },
-    "footer": {
-      "type": "footer",
-      "settings": {}
     }
   },
   "order": [
-    "header",
-    "main",
-    "footer"
+    "cart_page"
   ]
 }

@@ -1,0 +1,227 @@
+<!-- Breadcrumb Section Begin -->
+<section class="breadcrumb-option">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-12">
+        <div class="breadcrumb__text">
+          <h4>Shopping Cart</h4>
+          <div class="breadcrumb__links">
+            <a href="/">Home</a>
+            <a href="/collections/all">Shop</a>
+            <span>Shopping Cart</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- Breadcrumb Section End -->
+
+<!-- Shopping Cart Section Begin -->
+<section class="shopping-cart spad">
+  <div class="container">
+    {% if cart.item_count > 0 %}
+      <div class="row">
+        <div class="col-lg-8">
+          <div class="shopping__cart__table">
+            <table>
+              <thead>
+                <tr>
+                  <th>Product</th>
+                  <th>Quantity</th>
+                  <th>Total</th>
+                  <th></th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for item in cart.items %}
+                  <tr data-line-item="{{ forloop.index }}">
+                    <td class="product__cart__item">
+                      <div class="product__cart__item__pic">
+                        <img src="{{ item.image | img_url: 'small' }}" alt="{{ item.title }}">
+                      </div>
+                      <div class="product__cart__item__text">
+                        <h6>{{ item.product.title }}</h6>
+                        <h5>{{ item.price | money }}</h5>
+                        {% unless item.variant.title == 'Default Title' %}
+                          <p>{{ item.variant.title }}</p>
+                        {% endunless %}
+                      </div>
+                    </td>
+                    <td class="quantity__item">
+                      <div class="quantity">
+                        <div class="pro-qty-2">
+                          <input
+                            type="number"
+                            value="{{ item.quantity }}"
+                            min="1"
+                            data-line="{{ forloop.index }}"
+                            data-quantity-input
+                          >
+                        </div>
+                      </div>
+                    </td>
+                    <td class="cart__price">{{ item.line_price | money }}</td>
+                    <td class="cart__close">
+                      <i
+                        class="fa fa-close"
+                        data-line="{{ forloop.index }}"
+                        data-remove-item
+                        style="cursor: pointer;"
+                      ></i>
+                    </td>
+                  </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
+          <div class="row">
+            <div class="col-lg-6 col-md-6 col-sm-6">
+              <div class="continue__btn">
+                <a href="/collections/all">Continue Shopping</a>
+              </div>
+            </div>
+            <div class="col-lg-6 col-md-6 col-sm-6">
+              <div class="continue__btn update__btn">
+                <a href="#" id="update-cart"><i class="fa fa-spinner"></i> Update cart</a>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-4">
+          {% if section.settings.enable_discount_code %}
+            <div class="cart__discount">
+              <h6>Discount codes</h6>
+              <form action="/cart" method="post">
+                <input
+                  type="text"
+                  name="discount"
+                  placeholder="Coupon code"
+                  value="{{ cart.discount_applications[0].title }}"
+                >
+                <button type="submit">Apply</button>
+              </form>
+            </div>
+          {% endif %}
+          <div class="cart__total">
+            <h6>Cart total</h6>
+            <ul>
+              <li>
+                Subtotal <span id="cart-subtotal">{{ cart.total_price | money }}</span>
+              </li>
+              {% if cart.cart_level_discount_applications.size > 0 %}
+                {% for discount in cart.cart_level_discount_applications %}
+                  <li>
+                    Discount ({{ discount.title }}) <span>-{{ discount.total_allocated_amount | money }}</span>
+                  </li>
+                {% endfor %}
+              {% endif %}
+              <li>
+                Total <span id="cart-total">{{ cart.total_price | money }}</span>
+              </li>
+            </ul>
+            <a href="/checkout" class="primary-btn">Proceed to checkout</a>
+          </div>
+        </div>
+      </div>
+    {% else %}
+      <div class="row">
+        <div class="col-lg-12 text-center">
+          <div style="padding: 100px 0;">
+            <h3>Your cart is empty</h3>
+            <p style="margin: 20px 0;">Add some items to your cart to continue shopping.</p>
+            <a href="/collections/all" class="primary-btn">Continue Shopping</a>
+          </div>
+        </div>
+      </div>
+    {% endif %}
+  </div>
+</section>
+<!-- Shopping Cart Section End -->
+
+<script>
+  // Update cart quantity
+  document.querySelectorAll('[data-quantity-input]').forEach((input) => {
+    input.addEventListener('change', function () {
+      const line = this.dataset.line;
+      const quantity = parseInt(this.value);
+
+      if (quantity < 1) {
+        this.value = 1;
+        return;
+      }
+
+      updateCartItem(line, quantity);
+    });
+  });
+
+  // Remove cart item
+  document.querySelectorAll('[data-remove-item]').forEach((button) => {
+    button.addEventListener('click', function () {
+      const line = this.dataset.line;
+      if (confirm('Are you sure you want to remove this item?')) {
+        updateCartItem(line, 0);
+      }
+    });
+  });
+
+  // Update cart button
+  document.getElementById('update-cart')?.addEventListener('click', function (e) {
+    e.preventDefault();
+    location.reload();
+  });
+
+  // Function to update cart item
+  function updateCartItem(line, quantity) {
+    fetch('/cart/change.js', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        line: line,
+        quantity: quantity,
+      }),
+    })
+      .then((response) => response.json())
+      .then((cart) => {
+        // Reload page to show updated cart
+        location.reload();
+      })
+      .catch((error) => {
+        console.error('Error:', error);
+        alert('Error updating cart');
+      });
+  }
+
+  // Update cart count in header
+  function updateCartCount() {
+    fetch('/cart.js')
+      .then((response) => response.json())
+      .then((cart) => {
+        document.querySelectorAll('#cart-count, .offcanvas__nav__option span').forEach((el) => {
+          el.textContent = cart.item_count;
+        });
+        document.querySelectorAll('.price').forEach((el) => {
+          el.textContent = Shopify.formatMoney(cart.total_price);
+        });
+      });
+  }
+
+  // Update on page load
+  updateCartCount();
+</script>
+
+{% schema %}
+{
+  "name": "Shopping Cart",
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "enable_discount_code",
+      "label": "Enable Discount Code",
+      "default": true
+    }
+  ]
+}
+{% endschema %}
