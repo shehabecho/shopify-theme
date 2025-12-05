@@ -166,15 +166,6 @@
         "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
         "hashtag": "#Male_Fashion"
       }
-    },
-    "blog": {
-      "type": "malefashion-blog",
-      "settings": {
-        "subtitle": "Latest News",
-        "title": "Fashion New Trends",
-        "blog": "news",
-        "articles_to_show": 3
-      }
     }
   },
   "order": [
@@ -182,7 +173,6 @@
     "banner",
     "featured_products",
     "deal",
-    "instagram",
-    "blog"
+    "instagram"
   ]
 }
