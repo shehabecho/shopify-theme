@@ -52,6 +52,7 @@
         "banner_1": {
           "type": "banner",
           "settings": {
+            "image": "shopify://shop_images/banner-1.jpg",
             "title": "Clothing Collections 2024",
             "link": "/collections/all"
           }
@@ -59,6 +60,7 @@
         "banner_2": {
           "type": "banner",
           "settings": {
+            "image": "shopify://shop_images/banner-2.jpg",
             "title": "Accessories",
             "link": "/collections/accessories"
           }
@@ -66,6 +68,7 @@
         "banner_3": {
           "type": "banner",
           "settings": {
+            "image": "shopify://shop_images/banner-3.jpg",
             "title": "Shoes Spring 2024",
             "link": "/collections/shoes"
           }
