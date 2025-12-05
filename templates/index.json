@@ -15,6 +15,7 @@
         "slide_1": {
           "type": "slide",
           "settings": {
+            "background_image": "shopify://shop_images/hero-2.jpg",
             "subtitle": "Summer Collection",
             "title": "Fall - Winter Collections 2024",
             "description": "A specialist label creating luxury essentials. Ethically crafted with an unwavering commitment to exceptional quality.",
@@ -25,6 +26,7 @@
         "slide_2": {
           "type": "slide",
           "settings": {
+            "background_image": "shopify://shop_images/hero-1.jpg",
             "subtitle": "New Arrivals",
             "title": "Spring Collection 2024",
             "description": "Discover the latest trends in fashion. Premium quality meets contemporary style.",
@@ -106,27 +108,39 @@
       "blocks": {
         "instagram_1": {
           "type": "instagram_image",
-          "settings": {}
+          "settings": {
+            "link": ""
+          }
         },
         "instagram_2": {
           "type": "instagram_image",
-          "settings": {}
+          "settings": {
+            "link": ""
+          }
         },
         "instagram_3": {
           "type": "instagram_image",
-          "settings": {}
+          "settings": {
+            "link": ""
+          }
         },
         "instagram_4": {
           "type": "instagram_image",
-          "settings": {}
+          "settings": {
+            "link": ""
+          }
         },
         "instagram_5": {
           "type": "instagram_image",
-          "settings": {}
+          "settings": {
+            "link": ""
+          }
         },
         "instagram_6": {
           "type": "instagram_image",
-          "settings": {}
+          "settings": {
+            "link": ""
+          }
         }
       },
       "block_order": [
